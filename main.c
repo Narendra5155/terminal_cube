@@ -16,12 +16,9 @@ const wchar_t initial=L'.';
 const int L_len=9;
 float horizontal_offset=0;
 float vertical_offset=0;
-//const wchar_t map[]=L"         ";
 const wchar_t map[]=L" ▁▂▃▄▅▆▇█";
 float ldirection[3]={0,0.7071,-0.7071};
 float rotInc[3]={2,2,.4};
-//char map[]="..,,--~~::;;==!!**##$$@@";
-//map[4];
 float A=2;
 float B=2;
 float C=2;
@@ -41,12 +38,12 @@ float calcZ(float x,float y,float z){
     return sb * x - cb * sa * y + cb * ca * z;
 }
 void calculateRotation(float x,float y,float z,Buffer *buff,char ch,int *nor){
-    float xl=calcX(x,y,z); // remove the two later when rendering 3D
+    float xl=calcX(x,y,z); 
     float yl=calcY(x,y,z);
     float zl=calcZ(x,y,z);
     float L=(ldirection[0]*calcX(nor[0],nor[1],nor[2]) +
                 ldirection[1]*calcY(nor[0],nor[1],nor[2]) +
-                ldirection[2]*calcZ(nor[0],nor[1],nor[2]));//+distance;
+                ldirection[2]*calcZ(nor[0],nor[1],nor[2]));
     zl=zl+distance;
     float iz=1/zl;
     int xp=buff->w/2+(xl*K1*iz*2);
@@ -89,13 +86,11 @@ int main(){
     resetBuffer(&buff1);
 
     HANDLE console=CreateConsoleScreenBuffer(GENERIC_READ|GENERIC_WRITE,0,NULL,CONSOLE_TEXTMODE_BUFFER,NULL);
-   // HANDLE console=CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE,0,NULL,CONSOLE_TEXTMODE_BUFFER,NULL);
     DWORD words_written;
     COORD origin;
     origin.X=0;
     origin.Y=0;
     float increment=0.6;
-    //clock_t start,end;
     double deltatime=0;
     int pauseFlag=0;
     const float radtoDEG=180/3.14159265359;
@@ -131,10 +126,6 @@ int main(){
             }
         }
         
-       /*  printf("\033[1;1H");
-        for (int k=0; k<buff1.h*buff1.w;k++){
-            putchar((k%buff1.w)?buff1.buffer[k]:'\n');
-        } */
         if((GetAsyncKeyState('R')& 0x8000)){
             GetConsoleScreenBufferInfo(console,&info);
             swidth=info.dwSize.X;
@@ -144,14 +135,6 @@ int main(){
             wmemset(screen,initial,swidth*sheight);
             vertical_offset=0;
             horizontal_offset=0;
-            /* buff1.h=h;
-            buff1.w=w;
-            free(buff1.buffer);
-            free(buff1.zbuffer);
-            initBuffer(&buff1);
-            resetBuffer(&buff1); */
-
-            //sprintf(screen+(h-1)*w,"%d %d",h,w);
         }
 
         for(int j=0,l=vertical_offset;  j<buff1.h && l<sheight; j++,l++){
@@ -217,12 +200,11 @@ int main(){
             B=Twopi;
         if(C<0)
             C=Twopi;
+            
         QueryPerformanceCounter(&end);
         elapsedticks=end.QuadPart-start.QuadPart;
         deltatime=(double)(elapsedticks)/frequency.QuadPart;
-        /* A+=0.05;
-        B+=0.05;
-        C+=0.01; */
+
     }
     CloseHandle(console);
     SetConsoleActiveScreenBuffer(GetStdHandle(STD_OUTPUT_HANDLE));
