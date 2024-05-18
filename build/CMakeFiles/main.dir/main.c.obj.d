@@ -222,4 +222,6 @@ CMakeFiles/main.dir/main.c.obj: \
  C:/msys64/ucrt64/include/imm.h C:/msys64/ucrt64/include/math.h \
  C:/msys64/ucrt64/include/time.h C:/msys64/ucrt64/include/sys/timeb.h \
  C:/msys64/ucrt64/include/sec_api/sys/timeb_s.h \
- C:/msys64/ucrt64/include/pthread_time.h
+ C:/msys64/ucrt64/include/pthread_time.h C:/msys64/ucrt64/include/wchar.h \
+ C:/msys64/ucrt64/include/_mingw_stat64.h \
+ C:/msys64/ucrt64/include/sec_api/wchar_s.h

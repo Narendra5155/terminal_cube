@@ -3,23 +3,28 @@
 #include<windows.h>
 #include<math.h>
 #include<time.h>
+#include<wchar.h>
 typedef struct Buffer Buffer;
 
 struct Buffer{
-    char *buffer;
+    wchar_t *buffer;
     float *zbuffer;
     int w;
     int h;
 };
+const wchar_t initial=L'.';
 const int L_len=9;
-const char map[]=".:-=+*#%@$";
-float ldirection[3]={0,0,-1};
-float rotInc[3]={2,2,0.4};
+float horizontal_offset=0;
+float vertical_offset=0;
+//const wchar_t map[]=L"         ";
+const wchar_t map[]=L" ▁▂▃▄▅▆▇█";
+float ldirection[3]={0,0.7071,-0.7071};
+float rotInc[3]={2,2,.4};
 //char map[]="..,,--~~::;;==!!**##$$@@";
 //map[4];
-float A=0;
-float B=0;
-float C=0;
+float A=2;
+float B=2;
+float C=2;
 float sa,sb,sc,ca,cb,cc;
 float distance=200;
 float K1=100;
@@ -39,7 +44,9 @@ void calculateRotation(float x,float y,float z,Buffer *buff,char ch,int *nor){
     float xl=calcX(x,y,z); // remove the two later when rendering 3D
     float yl=calcY(x,y,z);
     float zl=calcZ(x,y,z);
-    float L=(ldirection[0]*calcX(nor[0],nor[1],nor[2])+ldirection[1]*calcY(nor[0],nor[1],nor[2])+ldirection[2]*calcZ(nor[0],nor[1],nor[2]));//+distance;
+    float L=(ldirection[0]*calcX(nor[0],nor[1],nor[2]) +
+                ldirection[1]*calcY(nor[0],nor[1],nor[2]) +
+                ldirection[2]*calcZ(nor[0],nor[1],nor[2]));//+distance;
     zl=zl+distance;
     float iz=1/zl;
     int xp=buff->w/2+(xl*K1*iz*2);
@@ -57,50 +64,53 @@ void calculateRotation(float x,float y,float z,Buffer *buff,char ch,int *nor){
 }
 void initBuffer(Buffer *buff){
     int size=buff->w*buff->h;
-    buff->buffer=(char*)malloc(size);
+    buff->buffer=(wchar_t*)malloc(size*sizeof(wchar_t));
     buff->zbuffer=(float*)malloc(size*sizeof(float));
 }
 int resetBuffer(Buffer *buff){
     int size=buff->w*buff->h;
-    memset(buff->buffer,' ',size);
+    wmemset(buff->buffer,initial,size);
     memset(buff->zbuffer,0,size*sizeof(float));
 }
 int main(){
-    char *screen;
-    int swidth=160;
-    int sheight=44;
-    int bwidth=160;
-    int bheight=40;
-    screen=(char*)malloc(sheight*swidth*sizeof(char));
-    memset(screen,' ',swidth*sheight);
+    CONSOLE_SCREEN_BUFFER_INFO info;
+    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE),&info);
+    wchar_t *screen;
+    int swidth=info.dwSize.X;
+    int sheight=info.dwSize.Y;
+
+    int cubeWidth=20;
+    screen=(wchar_t*)malloc(sheight*swidth*sizeof(wchar_t));
+    wmemset(screen,initial,swidth*sheight);
     Buffer buff1;
-    buff1.h=bheight;
-    buff1.w=bwidth;
+    buff1.h=cubeWidth*2;
+    buff1.w=cubeWidth*4;
     initBuffer(&buff1);
     resetBuffer(&buff1);
 
-    CONSOLE_SCREEN_BUFFER_INFO info;
-    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE),&info);
-    int w=info.dwSize.X;
-    int h=info.dwSize.Y;
     HANDLE console=CreateConsoleScreenBuffer(GENERIC_READ|GENERIC_WRITE,0,NULL,CONSOLE_TEXTMODE_BUFFER,NULL);
    // HANDLE console=CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE,0,NULL,CONSOLE_TEXTMODE_BUFFER,NULL);
     DWORD words_written;
     COORD origin;
     origin.X=0;
     origin.Y=0;
-    int cubeWidth=20;
     float increment=0.6;
-    clock_t start,end;
-    double deltatime;
+    //clock_t start,end;
+    double deltatime=0;
+    int pauseFlag=0;
+    const float radtoDEG=180/3.14159265359;
+    const  float Twopi=6.28318530718;
+    LARGE_INTEGER start,end,frequency;
+    LONGLONG elapsedticks;
     printf("\033[?25l");
     int normal[6][3]={0,0,1,1,0,0,-1,0,0,0,-1,0,0,0,-1,0,1,0};
     SetConsoleActiveScreenBuffer(console);
-    while(!(GetAsyncKeyState('Q')& 0x8000))
+    while(!(GetAsyncKeyState(VK_SPACE)& 0x8000))
     {
-        start=clock();
+        QueryPerformanceCounter(&start);
+        QueryPerformanceFrequency(&frequency);
         resetBuffer(&buff1);
-        memset(screen,' ',swidth*sheight);
+        wmemset(screen,initial,swidth*sheight);
 
         //Pre calculating sin and cos
         sa=sin(A);
@@ -127,36 +137,96 @@ int main(){
         } */
         if((GetAsyncKeyState('R')& 0x8000)){
             GetConsoleScreenBufferInfo(console,&info);
-            w=info.dwSize.X;
-            h=info.dwSize.Y;
-            buff1.h=h;
+            swidth=info.dwSize.X;
+            sheight=info.dwSize.Y;
+            free(screen); 
+            screen=(wchar_t*)malloc(swidth*sheight*sizeof(wchar_t));
+            wmemset(screen,initial,swidth*sheight);
+            vertical_offset=0;
+            horizontal_offset=0;
+            /* buff1.h=h;
             buff1.w=w;
             free(buff1.buffer);
             free(buff1.zbuffer);
             initBuffer(&buff1);
-            resetBuffer(&buff1);
+            resetBuffer(&buff1); */
 
-            sprintf(screen+(h-1)*w,"%d %d",h,w);
+            //sprintf(screen+(h-1)*w,"%d %d",h,w);
         }
 
-        for(int j=0; (j<h && j<buff1.h) ; j++){
-            for(int k=0; (k<w && k<buff1.w) ; k++ ){
-                screen[j*w+k]=buff1.buffer[j*buff1.w+k];
+        for(int j=0,l=vertical_offset;  j<buff1.h && l<sheight; j++,l++){
+            for(int k=0,m=horizontal_offset; k<buff1.w && m<swidth; k++,m++){
+                screen[l*swidth+m]=buff1.buffer[j*buff1.w+k];
             }
         } 
-        //sprintf(screen,"%d %d",h,w);
-        WriteConsoleOutputCharacter(console,screen,swidth*sheight,origin,&words_written);
-        end=clock();
-        deltatime=(double)(end-start)/CLOCKS_PER_SEC;
-        A+=rotInc[0]*deltatime;
-        B+=rotInc[1]*deltatime;
-        C+=rotInc[2]*deltatime;
+        if(!(GetAsyncKeyState('P') & 0x8000) && !pauseFlag){
+            swprintf(screen,swidth*(sheight),L"[FPS : %.2f]",1/deltatime);
+            A+=rotInc[0]*deltatime;
+            B+=rotInc[1]*deltatime;
+            C+=rotInc[2]*deltatime;
+        }
+        else{
+            pauseFlag=1;
+            if(GetAsyncKeyState('S')&0x8000)
+                A+=0.5*deltatime;
+            if(GetAsyncKeyState('W')&0x8000)
+                A-=0.5*deltatime;
+            if(GetAsyncKeyState('D')&0x8000)
+                B+=0.5*deltatime;
+            if(GetAsyncKeyState('A')&0x8000)
+                B-=0.5*deltatime; 
+            if(GetAsyncKeyState('E')&0x8000)
+                C+=0.5*deltatime;
+            if(GetAsyncKeyState('Q')&0x8000)
+                C-=0.5*deltatime;
+            if(GetAsyncKeyState('K')&0x8000)
+                K1+=20*deltatime;
+            if(GetAsyncKeyState('J')&0x8000)
+                K1-=20*deltatime;
+            if(GetAsyncKeyState('C')&0x8000)
+                distance-=20*deltatime;
+            if(GetAsyncKeyState('V')&0x8000)
+                distance+=20*deltatime;
+            if(GetAsyncKeyState(VK_LEFT)&0x8000)
+                horizontal_offset-=15*deltatime;
+            if(GetAsyncKeyState(VK_RIGHT)&0x8000)
+                horizontal_offset+=15*deltatime;
+            if(GetAsyncKeyState(VK_DOWN)&0x8000)
+                vertical_offset+=10*deltatime;
+            if(GetAsyncKeyState(VK_UP)&0x8000)
+                vertical_offset-=10*deltatime;
+            if(GetAsyncKeyState('O')&0x8000)
+                pauseFlag=0;
+            
+            swprintf(screen,swidth*sheight,L"[X Rotation : %.2f°,S-W]",A*radtoDEG);
+            swprintf(screen+swidth,swidth*(sheight),L"[Y Rotation : %.2f°,A-D]",B*radtoDEG);
+            swprintf(screen+swidth*2,swidth*(sheight),L"[Z Rotation : %.2f°,Q-E]",C*radtoDEG);
+            swprintf(screen+swidth*3,swidth*(sheight),L"[K value : %.2f,J-K]",K1);
+            swprintf(screen+swidth*4,swidth*(sheight),L"[Distance from camera : %.2f,C-V]",distance);
+        }
+        WriteConsoleOutputCharacterW(console,screen,swidth*sheight,origin,&words_written);
+        if(A>Twopi)
+            A-=Twopi;
+        if(B>Twopi)
+            B-=Twopi;
+        if(C>Twopi)
+            C-=Twopi;
+        if(A<0)
+            A=Twopi;
+        if(B<0)
+            B=Twopi;
+        if(C<0)
+            C=Twopi;
+        QueryPerformanceCounter(&end);
+        elapsedticks=end.QuadPart-start.QuadPart;
+        deltatime=(double)(elapsedticks)/frequency.QuadPart;
         /* A+=0.05;
         B+=0.05;
         C+=0.01; */
     }
+    CloseHandle(console);
     SetConsoleActiveScreenBuffer(GetStdHandle(STD_OUTPUT_HANDLE));
-    printf("%lf",deltatime);
+    printf("Screen Width : %d\nScreen Height: %d\n",swidth,sheight);
     return 0;
 }
 

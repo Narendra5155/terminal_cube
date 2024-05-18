@@ -7,6 +7,7 @@ CMakeFiles/main.dir/main.c.obj: C:/Users/Dell/OneDrive/Desktop/Codespace/c-progr
   C:/msys64/ucrt64/include/_mingw_mac.h \
   C:/msys64/ucrt64/include/_mingw_off_t.h \
   C:/msys64/ucrt64/include/_mingw_secapi.h \
+  C:/msys64/ucrt64/include/_mingw_stat64.h \
   C:/msys64/ucrt64/include/_mingw_stdarg.h \
   C:/msys64/ucrt64/include/_mingw_unicode.h \
   C:/msys64/ucrt64/include/_timeval.h \
@@ -115,6 +116,7 @@ CMakeFiles/main.dir/main.c.obj: C:/Users/Dell/OneDrive/Desktop/Codespace/c-progr
   C:/msys64/ucrt64/include/sec_api/stralign_s.h \
   C:/msys64/ucrt64/include/sec_api/string_s.h \
   C:/msys64/ucrt64/include/sec_api/sys/timeb_s.h \
+  C:/msys64/ucrt64/include/sec_api/wchar_s.h \
   C:/msys64/ucrt64/include/securityappcontainer.h \
   C:/msys64/ucrt64/include/securitybaseapi.h \
   C:/msys64/ucrt64/include/servprov.h \
@@ -144,6 +146,7 @@ CMakeFiles/main.dir/main.c.obj: C:/Users/Dell/OneDrive/Desktop/Codespace/c-progr
   C:/msys64/ucrt64/include/utilapiset.h \
   C:/msys64/ucrt64/include/vadefs.h \
   C:/msys64/ucrt64/include/virtdisk.h \
+  C:/msys64/ucrt64/include/wchar.h \
   C:/msys64/ucrt64/include/winapifamily.h \
   C:/msys64/ucrt64/include/winbase.h \
   C:/msys64/ucrt64/include/wincon.h \
@@ -309,14 +312,6 @@ C:/msys64/ucrt64/include/_mingw.h:
 
 C:/msys64/ucrt64/include/imm.h:
 
-C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/13.2.0/include/xsavesintrin.h:
-
-C:/msys64/ucrt64/include/jobapi.h:
-
-C:/msys64/ucrt64/include/ctype.h:
-
-C:/msys64/ucrt64/include/_mingw_unicode.h:
-
 C:/msys64/ucrt64/include/_mingw_mac.h:
 
 C:/msys64/ucrt64/include/mmiscapi2.h:
@@ -343,6 +338,16 @@ C:/msys64/ucrt64/include/winsvc.h:
 
 C:/msys64/ucrt64/include/_mingw_off_t.h:
 
+C:/msys64/ucrt64/include/_mingw_stat64.h:
+
+C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/13.2.0/include/xsavesintrin.h:
+
+C:/msys64/ucrt64/include/jobapi.h:
+
+C:/msys64/ucrt64/include/ctype.h:
+
+C:/msys64/ucrt64/include/_mingw_unicode.h:
+
 C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/13.2.0/include/x86intrin.h:
 
 C:/msys64/ucrt64/include/mmeapi.h:
@@ -364,6 +369,8 @@ C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/13.2.0/include/ia32intrin.h:
 C:/msys64/ucrt64/include/basetsd.h:
 
 C:/msys64/ucrt64/include/errhandlingapi.h:
+
+C:/msys64/ucrt64/include/sec_api/wchar_s.h:
 
 C:/msys64/ucrt64/include/bcrypt.h:
 
@@ -618,6 +625,8 @@ C:/msys64/ucrt64/include/unknwn.h:
 C:/msys64/ucrt64/include/unknwnbase.h:
 
 C:/msys64/ucrt64/include/urlmon.h:
+
+C:/msys64/ucrt64/include/wchar.h:
 
 C:/msys64/ucrt64/include/winapifamily.h:
 
