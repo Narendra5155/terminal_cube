@@ -11,8 +11,8 @@ struct Buffer{
     int w;
     int h;
 };
-int L_len=9;
-char map[]=".:-=+*#%@$";
+const int L_len=9;
+const char map[]=".:-=+*#%@$";
 float ldirection[3]={0,0,-1};
 float rotInc[3]={2,2,0.4};
 //char map[]="..,,--~~::;;==!!**##$$@@";
