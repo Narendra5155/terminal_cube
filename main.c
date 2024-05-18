@@ -12,6 +12,9 @@ struct Buffer{
     int w;
     int h;
 };
+
+HWND hWnd;
+double deltatime=0;
 const wchar_t initial=L'.';
 const int L_len=9;
 float horizontal_offset=0;
@@ -69,6 +72,41 @@ int resetBuffer(Buffer *buff){
     wmemset(buff->buffer,initial,size);
     memset(buff->zbuffer,0,size*sizeof(float));
 }
+
+int isKeydown(u_int x){
+    return (GetAsyncKeyState(x)&0x8000) && (GetForegroundWindow()==hWnd);
+}
+void keyCheck(){
+
+            if(isKeydown('S'))
+                A+=0.5*deltatime;
+            if(isKeydown('W'))
+                A-=0.5*deltatime;
+            if(isKeydown('D'))
+                B+=0.5*deltatime;
+            if(isKeydown('A'))
+                B-=0.5*deltatime; 
+            if(isKeydown('E'))
+                C+=0.5*deltatime;
+            if(isKeydown('Q'))
+                C-=0.5*deltatime;
+            if(isKeydown('K'))
+                K1+=20*deltatime;
+            if(isKeydown('J'))
+                K1-=20*deltatime;
+            if(isKeydown('C'))
+                distance-=20*deltatime;
+            if(isKeydown('V'))
+                distance+=20*deltatime;
+            if(isKeydown(VK_LEFT))
+                horizontal_offset-=15*deltatime;
+            if(isKeydown(VK_RIGHT))
+                horizontal_offset+=15*deltatime;
+            if(isKeydown(VK_DOWN))
+                vertical_offset+=10*deltatime;
+            if(isKeydown(VK_UP))
+                vertical_offset-=10*deltatime;
+}
 int main(){
     CONSOLE_SCREEN_BUFFER_INFO info;
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE),&info);
@@ -91,7 +129,6 @@ int main(){
     origin.X=0;
     origin.Y=0;
     float increment=0.6;
-    double deltatime=0;
     int pauseFlag=0;
     const float radtoDEG=180/3.14159265359;
     const  float Twopi=6.28318530718;
@@ -100,7 +137,8 @@ int main(){
     printf("\033[?25l");
     int normal[6][3]={0,0,1,1,0,0,-1,0,0,0,-1,0,0,0,-1,0,1,0};
     SetConsoleActiveScreenBuffer(console);
-    while(!(GetAsyncKeyState(VK_SPACE)& 0x8000))
+    hWnd = GetForegroundWindow();
+    while(!((GetAsyncKeyState(VK_SPACE)&0x8000) && (GetForegroundWindow()==hWnd)))
     {
         QueryPerformanceCounter(&start);
         QueryPerformanceFrequency(&frequency);
@@ -142,7 +180,7 @@ int main(){
                 screen[l*swidth+m]=buff1.buffer[j*buff1.w+k];
             }
         } 
-        if(!(GetAsyncKeyState('P') & 0x8000) && !pauseFlag){
+        if(!((GetAsyncKeyState('P') & 0x8000)&& GetForegroundWindow()==hWnd) && !pauseFlag){
             swprintf(screen,swidth*(sheight),L"[FPS : %.2f]",1/deltatime);
             A+=rotInc[0]*deltatime;
             B+=rotInc[1]*deltatime;
@@ -150,35 +188,8 @@ int main(){
         }
         else{
             pauseFlag=1;
-            if(GetAsyncKeyState('S')&0x8000)
-                A+=0.5*deltatime;
-            if(GetAsyncKeyState('W')&0x8000)
-                A-=0.5*deltatime;
-            if(GetAsyncKeyState('D')&0x8000)
-                B+=0.5*deltatime;
-            if(GetAsyncKeyState('A')&0x8000)
-                B-=0.5*deltatime; 
-            if(GetAsyncKeyState('E')&0x8000)
-                C+=0.5*deltatime;
-            if(GetAsyncKeyState('Q')&0x8000)
-                C-=0.5*deltatime;
-            if(GetAsyncKeyState('K')&0x8000)
-                K1+=20*deltatime;
-            if(GetAsyncKeyState('J')&0x8000)
-                K1-=20*deltatime;
-            if(GetAsyncKeyState('C')&0x8000)
-                distance-=20*deltatime;
-            if(GetAsyncKeyState('V')&0x8000)
-                distance+=20*deltatime;
-            if(GetAsyncKeyState(VK_LEFT)&0x8000)
-                horizontal_offset-=15*deltatime;
-            if(GetAsyncKeyState(VK_RIGHT)&0x8000)
-                horizontal_offset+=15*deltatime;
-            if(GetAsyncKeyState(VK_DOWN)&0x8000)
-                vertical_offset+=10*deltatime;
-            if(GetAsyncKeyState(VK_UP)&0x8000)
-                vertical_offset-=10*deltatime;
-            if(GetAsyncKeyState('O')&0x8000)
+            keyCheck();
+            if(isKeydown('O'))
                 pauseFlag=0;
             
             swprintf(screen,swidth*sheight,L"[X Rotation : %.2f°,S-W]",A*radtoDEG);
@@ -186,6 +197,7 @@ int main(){
             swprintf(screen+swidth*2,swidth*(sheight),L"[Z Rotation : %.2f°,Q-E]",C*radtoDEG);
             swprintf(screen+swidth*3,swidth*(sheight),L"[K value : %.2f,J-K]",K1);
             swprintf(screen+swidth*4,swidth*(sheight),L"[Distance from camera : %.2f,C-V]",distance);
+            swprintf(screen+swidth*5,swidth*sheight,L"[FPS : %.2f]",1/deltatime);
         }
         WriteConsoleOutputCharacterW(console,screen,swidth*sheight,origin,&words_written);
         if(A>Twopi)
@@ -200,7 +212,7 @@ int main(){
             B=Twopi;
         if(C<0)
             C=Twopi;
-            
+
         QueryPerformanceCounter(&end);
         elapsedticks=end.QuadPart-start.QuadPart;
         deltatime=(double)(elapsedticks)/frequency.QuadPart;
