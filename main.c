@@ -26,9 +26,11 @@ double deltatime=0;                         // Delta Time Variable
 const wchar_t initial=L'.';                  // Background Shade
 
 
-const int L_len=4;                          //Length of the illumination and illumination gradient
-const wchar_t map[]=L" ░▒▓█";
-//const wchar_t map[]=L" ▁▂▃▄▅▆▇█";
+//const int L_len=5;
+//const wchar_t map[]=L" ░▒▓█";
+
+const int L_len=9;                          //Length of the illumination and illumination gradient
+const wchar_t map[]=L" ▁▂▃▄▅▆▇█";
 
 float ldirection[3]={0,0.7071,-0.7071};     // Illumination Vector
 
@@ -156,14 +158,14 @@ void keyCheck(){
                 distance-=20*deltatime;
             if(isKeydown('V'))
                 distance+=20*deltatime;
-            if(isKeydown(VK_LEFT))
+            /* if(isKeydown(VK_LEFT))
                 horizontal_offset-=15*deltatime;
             if(isKeydown(VK_RIGHT))
                 horizontal_offset+=15*deltatime;
             if(isKeydown(VK_DOWN))
                 vertical_offset+=10*deltatime;
             if(isKeydown(VK_UP))
-                vertical_offset-=10*deltatime;
+                vertical_offset-=10*deltatime; */
 }
 
 
@@ -311,7 +313,17 @@ int main(){
             B=Twopi;
         if(C<0)
             C=Twopi;
+        
 
+        if(isKeydown(VK_LEFT))
+                horizontal_offset-=15*deltatime;
+        if(isKeydown(VK_RIGHT))
+                horizontal_offset+=15*deltatime;
+        if(isKeydown(VK_DOWN))
+                vertical_offset+=10*deltatime;
+        if(isKeydown(VK_UP))
+                vertical_offset-=10*deltatime;
+        
         //Write the screen buffer to the console
 
         WriteConsoleOutputCharacterW(console,screen,swidth*sheight,origin,&words_written);
