@@ -217,9 +217,6 @@ int main(){
     LARGE_INTEGER start,end,frequency;
     LONGLONG elapsedticks;
 
-    /* DWORD dw;
-    GetConsoleMode(GetStdHandle(STD_INPUT_HANDLE),&dw);
-    SetConsoleMode(GetStdHandle(STD_INPUT_HANDLE),~ENABLE_ECHO_INPUT); */
     //swap the generated buffer with the standard buffer
     SetConsoleActiveScreenBuffer(console);
     
@@ -333,7 +330,6 @@ int main(){
     FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
     //Free the console handle 
     CloseHandle(console);
-    /* SetConsoleMode(GetStdHandle(STD_INPUT_HANDLE),dw); */
     
     //Print the last known resolution and FPS
     printf("Screen Width : %d\nScreen Height: %d\nFPS :%.2f\n",swidth,sheight,1/deltatime);
