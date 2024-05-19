@@ -26,8 +26,9 @@ double deltatime=0;                         // Delta Time Variable
 const wchar_t initial=L'.';                  // Background Shade
 
 
-const int L_len=9;                          //Length of the illumination and illumination gradient
-const wchar_t map[]=L" ▁▂▃▄▅▆▇█";
+const int L_len=4;                          //Length of the illumination and illumination gradient
+const wchar_t map[]=L" ░▒▓█";
+//const wchar_t map[]=L" ▁▂▃▄▅▆▇█";
 
 float ldirection[3]={0,0.7071,-0.7071};     // Illumination Vector
 
