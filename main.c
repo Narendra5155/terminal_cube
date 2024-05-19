@@ -41,6 +41,7 @@ float vertical_offset=0;
 
 float rotInc[3]={2,2,.4};                   //Rotation Increment for the three axis roation
 
+float cubeWidth=20;                           //Define cube properties
 float A=0;                                  //Defining the rotation angle variable
 float B=0;
 float C=0;
@@ -158,6 +159,11 @@ void keyCheck(){
                 distance-=20*deltatime;
             if(isKeydown('V'))
                 distance+=20*deltatime;
+            if(isKeydown('M'))
+                cubeWidth+=5*deltatime;
+            if(isKeydown('N'))
+                cubeWidth-=5*deltatime;
+
             /* if(isKeydown(VK_LEFT))
                 horizontal_offset-=15*deltatime;
             if(isKeydown(VK_RIGHT))
@@ -192,10 +198,9 @@ int main(){
     
     //Set the size of the Cube buffer
     
-    int cubeWidth=20;
     Buffer buff1;
-    buff1.h=cubeWidth*2;
-    buff1.w=cubeWidth*4;
+    buff1.h=info.dwSize.Y;
+    buff1.w=info.dwSize.X;
     initBuffer(&buff1);
     resetBuffer(&buff1);
     
@@ -259,7 +264,13 @@ int main(){
         if(isKeydown('R')){
             GetConsoleScreenBufferInfo(console,&info);
             swidth=info.dwSize.X;
-            sheight=info.dwSize.Y;
+            sheight=info.dwSize.Y; 
+            buff1.w=info.dwSize.X;
+            buff1.h=info.dwSize.Y;
+            free(buff1.buffer);
+            free(buff1.zbuffer);
+            initBuffer(&buff1);
+            resetBuffer(&buff1);
             free(screen); 
             screen=(wchar_t*)malloc(swidth*sheight*sizeof(wchar_t));
             wmemset(screen,initial,swidth*sheight);
@@ -278,7 +289,9 @@ int main(){
         //Pause The animation
 
         if(!isKeydown('P') && !pauseFlag){
-            swprintf(screen,swidth*(sheight),L"[FPS : %.2f]",1/deltatime);
+            swprintf(screen,swidth*sheight,L"[FPS : %.2f]",1/deltatime);
+            swprintf(screen+swidth,swidth*sheight,L"[Press R to Refresh]");
+            swprintf(screen+swidth*2,swidth*sheight,L"[Press P to Pause]");
             A+=rotInc[0]*deltatime;
             B+=rotInc[1]*deltatime;
             C+=rotInc[2]*deltatime;
@@ -291,12 +304,14 @@ int main(){
             
             //Print the info in the pause mode
 
-            swprintf(screen,swidth*sheight,L"[X Rotation : %.2f°,S-W]",A*radtoDEG);
-            swprintf(screen+swidth,swidth*(sheight),L"[Y Rotation : %.2f°,A-D]",B*radtoDEG);
-            swprintf(screen+swidth*2,swidth*(sheight),L"[Z Rotation : %.2f°,Q-E]",C*radtoDEG);
-            swprintf(screen+swidth*3,swidth*(sheight),L"[K value : %.2f,J-K]",K1);
-            swprintf(screen+swidth*4,swidth*(sheight),L"[Distance from camera : %.2f,C-V]",distance);
-            swprintf(screen+swidth*5,swidth*sheight,L"[FPS : %.2f]",1/deltatime);
+            swprintf(screen+swidth*0,swidth*sheight,L"[X Rotation : %5.2f°,S-W]",A*radtoDEG);
+            swprintf(screen+swidth*1,swidth*sheight,L"[Y Rotation : %5.2f°,A-D]",B*radtoDEG);
+            swprintf(screen+swidth*2,swidth*sheight,L"[Z Rotation : %5.2f°,Q-E]",C*radtoDEG);
+            swprintf(screen+swidth*3,swidth*sheight,L"[K value    : %5.2f ,J-K]",K1);
+            swprintf(screen+swidth*4,swidth*sheight,L"[Camera     : %5.2f ,C-V]",distance);
+            swprintf(screen+swidth*5,swidth*sheight,L"[FPS        : %5d     ]",(int)(1/deltatime));
+            swprintf(screen+swidth*6,swidth*sheight,L"[Cube Width : %5.2f,N-M ]",cubeWidth);
+            swprintf(screen+swidth*7,swidth*sheight,L"[Press O to Resume      ]");
         }
         
         //Keep the value of rotation angle within bounds
