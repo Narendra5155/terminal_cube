@@ -1,5 +1,5 @@
-This is a cube animation that I made\n 
-(Windows only).\n
+This is a cube animation that I made
+(Windows only).
 
 Controls are 
 
