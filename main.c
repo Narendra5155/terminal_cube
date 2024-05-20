@@ -5,8 +5,6 @@
 #include<time.h>
 #include<wchar.h>
 
-//Define the buffer structure for the 3D object
-
 typedef struct Buffer Buffer;
 struct Buffer{
     wchar_t *buffer;
@@ -14,6 +12,17 @@ struct Buffer{
     int w;
     int h;
 };
+void Error(int n);
+float calcX(float x,float y,float z);
+float calcY(float x,float y,float z);
+float calcZ(float x,float y,float z);
+void calculateRotation(float x,float y,float z,Buffer *buff,char ch,int *nor);
+void initBuffer(Buffer *buff);
+int resetBuffer(Buffer *buff);
+int isKeydown(u_int x);
+void keyCheck();
+
+//Define the buffer structure for the 3D object
 
 
 const float radtoDEG=180/3.14159265359;      //Defining The value of pi and 2pi for degree calculations
@@ -117,6 +126,8 @@ void initBuffer(Buffer *buff){
     
     buff->buffer=(wchar_t*)malloc(size*sizeof(wchar_t));
     buff->zbuffer=(float*)malloc(size*sizeof(float));
+    if(buff->buffer==NULL || buff->zbuffer==NULL)
+        Error(2);
 }
 
 
@@ -174,8 +185,25 @@ void keyCheck(){
                 vertical_offset-=10*deltatime; */
 }
 
+void Error(int n){
+FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
+SetConsoleActiveScreenBuffer(GetStdHandle(STD_INPUT_HANDLE));
+switch (n)
+{
+case 1:
+    fprintf(stderr,"Screen Buffer");
+    break;
+case 2:
+    fprintf(stderr,"Cube Buffer");
+default:
+    fprintf(stderr,"Unexpected Error");
+    break;
+}
+exit(-1);
+}
 
 //Main function call
+
 
 int main(){
     
@@ -193,6 +221,8 @@ int main(){
     int swidth=info.dwSize.X;
     int sheight=info.dwSize.Y;
     screen=(wchar_t*)malloc(sheight*swidth*sizeof(wchar_t));
+    if(screen==NULL)
+        Error(1);
     wmemset(screen,initial,swidth*sheight);
 
     
@@ -273,6 +303,8 @@ int main(){
             resetBuffer(&buff1);
             free(screen); 
             screen=(wchar_t*)malloc(swidth*sheight*sizeof(wchar_t));
+            if(screen==NULL)
+                Error(1);
             wmemset(screen,initial,swidth*sheight);
             vertical_offset=0;
             horizontal_offset=0;
@@ -362,5 +394,5 @@ int main(){
     //Print the last known resolution and FPS
     printf("Screen Width : %d\nScreen Height: %d\nFPS :%.2f\n",swidth,sheight,1/deltatime);
     return 0;
-}
 
+}
