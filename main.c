@@ -34,14 +34,14 @@ double deltatime=0;                         // Delta Time Variable
 
 const wchar_t initial=L'.';                  // Background Shade
 
+int illumination_switch=1;
+const int L_len[2]={5,9};
+const wchar_t map[2][10]={L" ░▒▓█",L" ▁▂▃▄▅▆▇█"};
 
-//const int L_len=5;
-//const wchar_t map[]=L" ░▒▓█";
+/* const int L_len=9;                          //Length of the illumination and illumination gradient
+const wchar_t map[]=L" ▁▂▃▄▅▆▇█"; */
 
-const int L_len=9;                          //Length of the illumination and illumination gradient
-const wchar_t map[]=L" ▁▂▃▄▅▆▇█";
-
-float ldirection[3]={0,0.7071,-0.7071};     // Illumination Vector
+float ldirection[3]={0,0.5,-0.86602540378};     // Illumination Vector
 
 float horizontal_offset=0;                  // offset for the screen buffer
 float vertical_offset=0;
@@ -108,12 +108,12 @@ void calculateRotation(float x,float y,float z,Buffer *buff,char ch,int *nor){
     int idx=(yp*buff->w)+xp;
     int aidx;
     if(L>0)
-        aidx=L_len*L;
+        aidx=L_len[illumination_switch]*L;
     else
         aidx=0;
     
     if(idx>=0 && idx<(buff->w*buff->h) && buff->zbuffer[idx]<iz){
-        buff->buffer[idx]=map[aidx];
+        buff->buffer[idx]=map[illumination_switch][aidx];
         buff->zbuffer[idx]=iz;
     }
 }
@@ -288,7 +288,7 @@ int main(){
             }
         }
         
-        
+        illumination_switch=1;
         //Refreshing the window
 
         if(isKeydown('R')){
@@ -370,6 +370,8 @@ int main(){
                 vertical_offset+=10*deltatime;
         if(isKeydown(VK_UP))
                 vertical_offset-=10*deltatime;
+        if(isKeydown('I'))
+                illumination_switch=0;
         
         //Write the screen buffer to the console
 
