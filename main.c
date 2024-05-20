@@ -16,7 +16,7 @@ void Error(int n);
 float calcX(float x,float y,float z);
 float calcY(float x,float y,float z);
 float calcZ(float x,float y,float z);
-void calculateRotation(float x,float y,float z,Buffer *buff,char ch,int *nor);
+void calculateRotation(float x,float y,float z,Buffer *buff,wchar_t ch,int *nor);
 void initBuffer(Buffer *buff);
 int resetBuffer(Buffer *buff);
 int isKeydown(u_int x);
@@ -86,7 +86,7 @@ float calcZ(float x,float y,float z){
 }
 
 
-void calculateRotation(float x,float y,float z,Buffer *buff,char ch,int *nor){
+void calculateRotation(float x,float y,float z,Buffer *buff,wchar_t ch,int *nor){
     
     float xl=calcX(x,y,z); 
     float yl=calcY(x,y,z);
@@ -113,7 +113,8 @@ void calculateRotation(float x,float y,float z,Buffer *buff,char ch,int *nor){
         aidx=0;
     
     if(idx>=0 && idx<(buff->w*buff->h) && buff->zbuffer[idx]<iz){
-        buff->buffer[idx]=map[illumination_switch][aidx];
+        //buff->buffer[idx]=map[illumination_switch][aidx];
+        buff->buffer[idx]=ch;
         buff->zbuffer[idx]=iz;
     }
 }
@@ -278,12 +279,12 @@ int main(){
 
         for(float cubeX=-cubeWidth;cubeX<cubeWidth;cubeX+=increment){
             for(float cubeY=-cubeWidth;cubeY<cubeWidth;cubeY+=increment){
-                calculateRotation(cubeX, cubeY, cubeWidth, &buff1,'@',normal[0]);
-                calculateRotation(cubeWidth, cubeY, -cubeX, &buff1,'#',normal[1]); 
-                calculateRotation(-cubeWidth, cubeY, cubeX, &buff1,';',normal[2]);
-                calculateRotation(cubeX, -cubeWidth, cubeY, &buff1,'?',normal[3]);
-                calculateRotation(cubeX, -cubeY, -cubeWidth, &buff1,'/',normal[4]);
-                calculateRotation(cubeX, cubeWidth, -cubeY, &buff1,'*',normal[5]);
+                calculateRotation(cubeX, cubeY, cubeWidth, &buff1,L' ',normal[0]);
+                calculateRotation(cubeWidth, cubeY, -cubeX, &buff1,L'░',normal[1]); 
+                calculateRotation(-cubeWidth, cubeY, cubeX, &buff1,L'▒',normal[2]);
+                calculateRotation(cubeX, -cubeWidth, cubeY, &buff1,L'▓',normal[3]);
+                calculateRotation(cubeX, -cubeY, -cubeWidth, &buff1,L'█',normal[4]);
+                calculateRotation(cubeX, cubeWidth, -cubeY, &buff1,L'▅',normal[5]);
  
             }
         }
