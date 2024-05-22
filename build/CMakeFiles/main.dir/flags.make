@@ -4,7 +4,7 @@
 # compile C with C:/msys64/ucrt64/bin/gcc.exe
 C_DEFINES = 
 
-C_INCLUDES = 
+C_INCLUDES = @CMakeFiles/main.dir/includes_C.rsp
 
 C_FLAGS = -O3 -DNDEBUG
 

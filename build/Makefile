@@ -510,6 +510,19 @@ ContinuousSubmit/fast:
 .PHONY : ContinuousSubmit/fast
 
 #=============================================================================
+# Target rules for targets named console
+
+# Build rule for target.
+console: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 console
+.PHONY : console
+
+# fast build rule for target.
+console/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\console.dir\build.make CMakeFiles/console.dir/build
+.PHONY : console/fast
+
+#=============================================================================
 # Target rules for targets named main
 
 # Build rule for target.
@@ -545,6 +558,30 @@ main.s: main.c.s
 main.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/main.c.s
 .PHONY : main.c.s
+
+src/console.obj: src/console.c.obj
+.PHONY : src/console.obj
+
+# target to build an object file
+src/console.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\console.dir\build.make CMakeFiles/console.dir/src/console.c.obj
+.PHONY : src/console.c.obj
+
+src/console.i: src/console.c.i
+.PHONY : src/console.i
+
+# target to preprocess a source file
+src/console.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\console.dir\build.make CMakeFiles/console.dir/src/console.c.i
+.PHONY : src/console.c.i
+
+src/console.s: src/console.c.s
+.PHONY : src/console.s
+
+# target to generate assembly for a file
+src/console.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\console.dir\build.make CMakeFiles/console.dir/src/console.c.s
+.PHONY : src/console.c.s
 
 # Help Target
 help:
@@ -585,10 +622,14 @@ help:
 	@echo ... NightlySubmit
 	@echo ... NightlyTest
 	@echo ... NightlyUpdate
+	@echo ... console
 	@echo ... main
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s
+	@echo ... src/console.obj
+	@echo ... src/console.i
+	@echo ... src/console.s
 .PHONY : help
 
 

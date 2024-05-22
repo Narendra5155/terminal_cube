@@ -26,6 +26,7 @@ C:/Users/Dell/OneDrive/Desktop/Codespace/c-programming-2/New folder/ascii_art2/b
 C:/Users/Dell/OneDrive/Desktop/Codespace/c-programming-2/New folder/ascii_art2/build/CMakeFiles/ContinuousCoverage.dir
 C:/Users/Dell/OneDrive/Desktop/Codespace/c-programming-2/New folder/ascii_art2/build/CMakeFiles/ContinuousMemCheck.dir
 C:/Users/Dell/OneDrive/Desktop/Codespace/c-programming-2/New folder/ascii_art2/build/CMakeFiles/ContinuousSubmit.dir
+C:/Users/Dell/OneDrive/Desktop/Codespace/c-programming-2/New folder/ascii_art2/build/CMakeFiles/console.dir
 C:/Users/Dell/OneDrive/Desktop/Codespace/c-programming-2/New folder/ascii_art2/build/CMakeFiles/main.dir
 C:/Users/Dell/OneDrive/Desktop/Codespace/c-programming-2/New folder/ascii_art2/build/CMakeFiles/package.dir
 C:/Users/Dell/OneDrive/Desktop/Codespace/c-programming-2/New folder/ascii_art2/build/CMakeFiles/package_source.dir

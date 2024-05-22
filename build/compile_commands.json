@@ -1,7 +1,13 @@
 [
 {
   "directory": "C:/Users/Dell/OneDrive/Desktop/Codespace/c-programming-2/New folder/ascii_art2/build",
-  "command": "C:\\msys64\\ucrt64\\bin\\gcc.exe   -O3 -DNDEBUG -o CMakeFiles\\main.dir\\main.c.obj -c \"C:\\Users\\Dell\\OneDrive\\Desktop\\Codespace\\c-programming-2\\New folder\\ascii_art2\\main.c\"",
+  "command": "C:\\msys64\\ucrt64\\bin\\gcc.exe  @CMakeFiles/console.dir/includes_C.rsp -O3 -DNDEBUG -o CMakeFiles\\console.dir\\src\\console.c.obj -c \"C:\\Users\\Dell\\OneDrive\\Desktop\\Codespace\\c-programming-2\\New folder\\ascii_art2\\src\\console.c\"",
+  "file": "C:/Users/Dell/OneDrive/Desktop/Codespace/c-programming-2/New folder/ascii_art2/src/console.c",
+  "output": "CMakeFiles/console.dir/src/console.c.obj"
+},
+{
+  "directory": "C:/Users/Dell/OneDrive/Desktop/Codespace/c-programming-2/New folder/ascii_art2/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\gcc.exe  @CMakeFiles/main.dir/includes_C.rsp -O3 -DNDEBUG -o CMakeFiles\\main.dir\\main.c.obj -c \"C:\\Users\\Dell\\OneDrive\\Desktop\\Codespace\\c-programming-2\\New folder\\ascii_art2\\main.c\"",
   "file": "C:/Users/Dell/OneDrive/Desktop/Codespace/c-programming-2/New folder/ascii_art2/main.c",
   "output": "CMakeFiles/main.dir/main.c.obj"
 }

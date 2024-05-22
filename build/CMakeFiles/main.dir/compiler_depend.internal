@@ -3,6 +3,7 @@
 
 CMakeFiles/main.dir/main.c.obj
  C:/Users/Dell/OneDrive/Desktop/Codespace/c-programming-2/New folder/ascii_art2/main.c
+ C:/Users/Dell/OneDrive/Desktop/Codespace/c-programming-2/New folder/ascii_art2/include/console.h
  C:/msys64/ucrt64/include/_bsd_types.h
  C:/msys64/ucrt64/include/_mingw.h
  C:/msys64/ucrt64/include/_mingw_mac.h
@@ -54,7 +55,6 @@ CMakeFiles/main.dir/main.c.obj
  C:/msys64/ucrt64/include/limits.h
  C:/msys64/ucrt64/include/lzexpand.h
  C:/msys64/ucrt64/include/malloc.h
- C:/msys64/ucrt64/include/math.h
  C:/msys64/ucrt64/include/mciapi.h
  C:/msys64/ucrt64/include/mcx.h
  C:/msys64/ucrt64/include/memoryapi.h
@@ -112,7 +112,6 @@ CMakeFiles/main.dir/main.c.obj
  C:/msys64/ucrt64/include/sal.h
  C:/msys64/ucrt64/include/sdkddkver.h
  C:/msys64/ucrt64/include/sdks/_mingw_ddk.h
- C:/msys64/ucrt64/include/sec_api/stdio_s.h
  C:/msys64/ucrt64/include/sec_api/stdlib_s.h
  C:/msys64/ucrt64/include/sec_api/stralign_s.h
  C:/msys64/ucrt64/include/sec_api/string_s.h
@@ -125,7 +124,6 @@ CMakeFiles/main.dir/main.c.obj
  C:/msys64/ucrt64/include/specstrings.h
  C:/msys64/ucrt64/include/stdarg.h
  C:/msys64/ucrt64/include/stddef.h
- C:/msys64/ucrt64/include/stdio.h
  C:/msys64/ucrt64/include/stdlib.h
  C:/msys64/ucrt64/include/stralign.h
  C:/msys64/ucrt64/include/string.h
