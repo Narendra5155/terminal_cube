@@ -7,56 +7,56 @@
 
 // pre calculate the sines and cosines
 
-void CalclulateAngles(){
-        sa=sin(A);
-        sb=sin(B);
-        sc=sin(C);
-        ca=cos(A);
-        cb=cos(B);
-        cc=cos(C);
+void CalclulateAngles(TrigRaito *pre){
+        pre->sa=sin(A);
+        pre->sb=sin(B);
+        pre->sc=sin(C);
+        pre->ca=cos(A);
+        pre->cb=cos(B);
+        pre->cc=cos(C);
         
 }
 
 //X axis Rotation Calculation function(Matrix multipication)
-float calcX(float x,float y,float z){
-    return cc * cb * x + cc * sb * sa * y - cc * sb * ca * z + 
-           sc * ca * y + sc * sa * z;
+inline float calcX(float x,float y,float z,TrigRaito *pre){
+    return pre->cc * pre->cb * x + pre->cc * pre->sb * pre->sa * y - pre->cc * pre->sb * pre->ca * z + 
+           pre->sc * pre->ca * y + pre->sc * pre->sa * z;
 }
 
 
 //Y axis Rotation Calculation function(Matrix multipication)
 
-float calcY(float x,float y,float z){
-    return cc * ca * y + cc * sa * z - sc * cb * x - 
-           sc * sb * sa * y + 
-           sc * sb * ca * z ;
+inline float calcY(float x,float y,float z,TrigRaito *pre){
+    return pre->cc * pre->ca * y + pre->cc * pre->sa * z - pre->sc * pre->cb * x - 
+           pre->sc * pre->sb * pre->sa * y + 
+           pre->sc * pre->sb * pre->ca * z ;
 }
 
 //Z axis Rotation Calculation function(Matrix multipication)
 
-float calcZ(float x,float y,float z){
-    return sb * x - cb * sa * y + cb * ca * z;
+inline float calcZ(float x,float y,float z,TrigRaito *pre){
+    return pre->sb * x - pre->cb * pre->sa * y + pre->cb * pre->ca * z;
 }
 
 
-void calculateRotation(float x,float y,float z,Buffer *buff,char ch,int *nor){
+void calculateRotation(float x,float y,float z,Buffer *buff,TrigRaito *pre,int *nor){
     
-    float xl=calcX(x,y,z); 
-    float yl=calcY(x,y,z);
-    float zl=calcZ(x,y,z);
+    float xl=calcX(x,y,z,pre); 
+    float yl=calcY(x,y,z,pre);
+    float zl=calcZ(x,y,z,pre);
     
     //Calculate the Luminance value
 
-    float L=(ldirection[0]*calcX(nor[0],nor[1],nor[2]) +
-                ldirection[1]*calcY(nor[0],nor[1],nor[2]) +
-                ldirection[2]*calcZ(nor[0],nor[1],nor[2]));
+    float L=(ldirection[0]*calcX(nor[0],nor[1],nor[2],pre) +
+                ldirection[1]*calcY(nor[0],nor[1],nor[2],pre) +
+                ldirection[2]*calcZ(nor[0],nor[1],nor[2],pre));
     
     zl=zl+distance;
     
     float iz=1/zl;
     
-    int xp=buff->w/2+(xl*K1*iz*2);
-    int yp=buff->h/2-(yl*K1*iz);
+    int xp=buff->w/2+horizontal_offset+(xl*K1*iz*2);
+    int yp=buff->h/2+vertical_offset-(yl*K1*iz);
     
     int idx=(yp*buff->w)+xp;
     int aidx;
@@ -65,7 +65,7 @@ void calculateRotation(float x,float y,float z,Buffer *buff,char ch,int *nor){
     else
         aidx=0;
     
-    if(idx>=0 && idx<(buff->w*buff->h) && buff->zbuffer[idx]<iz){
+    if(idx>=0 && idx<(buff->w*buff->h) && buff->zbuffer[idx]<iz && xp>=0 && xp<buff->w){
         buff->buffer[idx]=map[illumination_switch][aidx];
         buff->zbuffer[idx]=iz;
     }

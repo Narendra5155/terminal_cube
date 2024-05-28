@@ -54,6 +54,7 @@ CMakeFiles/main.dir/main.c.obj: C:/Users/Dell/OneDrive/Desktop/Codespace/c-progr
   C:/msys64/ucrt64/include/limits.h \
   C:/msys64/ucrt64/include/lzexpand.h \
   C:/msys64/ucrt64/include/malloc.h \
+  C:/msys64/ucrt64/include/math.h \
   C:/msys64/ucrt64/include/mciapi.h \
   C:/msys64/ucrt64/include/mcx.h \
   C:/msys64/ucrt64/include/memoryapi.h \
@@ -111,6 +112,7 @@ CMakeFiles/main.dir/main.c.obj: C:/Users/Dell/OneDrive/Desktop/Codespace/c-progr
   C:/msys64/ucrt64/include/sal.h \
   C:/msys64/ucrt64/include/sdkddkver.h \
   C:/msys64/ucrt64/include/sdks/_mingw_ddk.h \
+  C:/msys64/ucrt64/include/sec_api/stdio_s.h \
   C:/msys64/ucrt64/include/sec_api/stdlib_s.h \
   C:/msys64/ucrt64/include/sec_api/stralign_s.h \
   C:/msys64/ucrt64/include/sec_api/string_s.h \
@@ -123,6 +125,7 @@ CMakeFiles/main.dir/main.c.obj: C:/Users/Dell/OneDrive/Desktop/Codespace/c-progr
   C:/msys64/ucrt64/include/specstrings.h \
   C:/msys64/ucrt64/include/stdarg.h \
   C:/msys64/ucrt64/include/stddef.h \
+  C:/msys64/ucrt64/include/stdio.h \
   C:/msys64/ucrt64/include/stdlib.h \
   C:/msys64/ucrt64/include/stralign.h \
   C:/msys64/ucrt64/include/string.h \
@@ -454,7 +457,7 @@ C:/msys64/ucrt64/include/limits.h:
 
 C:/msys64/ucrt64/include/lzexpand.h:
 
-C:/msys64/ucrt64/include/msxml.h:
+C:/msys64/ucrt64/include/math.h:
 
 C:/msys64/ucrt64/include/pshpack1.h:
 
@@ -465,6 +468,8 @@ C:/msys64/ucrt64/include/minwinbase.h:
 C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/13.2.0/include/shaintrin.h:
 
 C:/msys64/ucrt64/include/mmsystem.h:
+
+C:/msys64/ucrt64/include/msxml.h:
 
 C:/msys64/ucrt64/include/nb30.h:
 
@@ -562,6 +567,8 @@ C:/msys64/ucrt64/include/sal.h:
 
 C:/msys64/ucrt64/include/sdkddkver.h:
 
+C:/msys64/ucrt64/include/sec_api/stdio_s.h:
+
 C:/msys64/ucrt64/include/sec_api/stralign_s.h:
 
 C:/msys64/ucrt64/include/sec_api/sys/timeb_s.h:
@@ -583,6 +590,8 @@ C:/msys64/ucrt64/include/specstrings.h:
 C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/13.2.0/include/avx512dqintrin.h:
 
 C:/msys64/ucrt64/include/stdarg.h:
+
+C:/msys64/ucrt64/include/stdio.h:
 
 C:/msys64/ucrt64/include/stralign.h:
 
