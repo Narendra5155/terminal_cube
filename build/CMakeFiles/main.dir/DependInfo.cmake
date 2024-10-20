@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "C:/Users/Dell/OneDrive/Desktop/Codespace/c-programming-2/New folder/ascii_art2/main.c" "CMakeFiles/main.dir/main.c.obj" "gcc" "CMakeFiles/main.dir/main.c.obj.d"
+  "C:/Users/hindw/OneDrive/Desktop/Codespace/c-programming-2/New folder/ascii_art2/main.c" "CMakeFiles/main.dir/main.c.obj" "gcc" "CMakeFiles/main.dir/main.c.obj.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

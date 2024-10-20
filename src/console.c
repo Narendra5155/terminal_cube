@@ -18,7 +18,7 @@ void CalclulateAngles(TrigRaito *pre){
 }
 
 //X axis Rotation Calculation function(Matrix multipication)
-inline float calcX(float x,float y,float z,TrigRaito *pre){
+static inline float calcX(float x,float y,float z,TrigRaito *pre){
     return pre->cc * pre->cb * x + pre->cc * pre->sb * pre->sa * y - pre->cc * pre->sb * pre->ca * z + 
            pre->sc * pre->ca * y + pre->sc * pre->sa * z;
 }
@@ -26,7 +26,7 @@ inline float calcX(float x,float y,float z,TrigRaito *pre){
 
 //Y axis Rotation Calculation function(Matrix multipication)
 
-inline float calcY(float x,float y,float z,TrigRaito *pre){
+static inline float calcY(float x,float y,float z,TrigRaito *pre){
     return pre->cc * pre->ca * y + pre->cc * pre->sa * z - pre->sc * pre->cb * x - 
            pre->sc * pre->sb * pre->sa * y + 
            pre->sc * pre->sb * pre->ca * z ;
@@ -34,7 +34,7 @@ inline float calcY(float x,float y,float z,TrigRaito *pre){
 
 //Z axis Rotation Calculation function(Matrix multipication)
 
-inline float calcZ(float x,float y,float z,TrigRaito *pre){
+static inline float calcZ(float x,float y,float z,TrigRaito *pre){
     return pre->sb * x - pre->cb * pre->sa * y + pre->cb * pre->ca * z;
 }
 
@@ -92,51 +92,7 @@ int resetBuffer(Buffer *buff){
     memset(buff->zbuffer,0,size*sizeof(float));
 }
 
-//Check the Key Press
 
-int isKeydown(u_int x){
-    return (GetAsyncKeyState(x)&0x8000) && (GetForegroundWindow()==hWnd);
-}
-
-
-//Key Bindings
-
-void keyCheck(){
-
-            if(isKeydown('S'))
-                A+=0.5*deltatime;
-            if(isKeydown('W'))
-                A-=0.5*deltatime;
-            if(isKeydown('D'))
-                B+=0.5*deltatime;
-            if(isKeydown('A'))
-                B-=0.5*deltatime; 
-            if(isKeydown('E'))
-                C+=0.5*deltatime;
-            if(isKeydown('Q'))
-                C-=0.5*deltatime;
-            if(isKeydown('K'))
-                K1+=20*deltatime;
-            if(isKeydown('J'))
-                K1-=20*deltatime;
-            if(isKeydown('C'))
-                distance-=20*deltatime;
-            if(isKeydown('V'))
-                distance+=20*deltatime;
-            if(isKeydown('M'))
-                cubeWidth+=5*deltatime;
-            if(isKeydown('N'))
-                cubeWidth-=5*deltatime;
-
-            /* if(isKeydown(VK_LEFT))
-                horizontal_offset-=15*deltatime;
-            if(isKeydown(VK_RIGHT))
-                horizontal_offset+=15*deltatime;
-            if(isKeydown(VK_DOWN))
-                vertical_offset+=10*deltatime;
-            if(isKeydown(VK_UP))
-                vertical_offset-=10*deltatime; */
-}
 
 void Error(int n){
 FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));

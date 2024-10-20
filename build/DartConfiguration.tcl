@@ -4,14 +4,14 @@
 
 
 # Configuration directories and files
-SourceDirectory: C:/Users/Dell/OneDrive/Desktop/Codespace/c-programming-2/New folder/ascii_art2
-BuildDirectory: C:/Users/Dell/OneDrive/Desktop/Codespace/c-programming-2/New folder/ascii_art2/build
+SourceDirectory: C:/Users/hindw/OneDrive/Desktop/Codespace/c-programming-2/New folder/ascii_art2
+BuildDirectory: C:/Users/hindw/OneDrive/Desktop/Codespace/c-programming-2/New folder/ascii_art2/build
 
 # Where to place the cost data store
 CostDataFile: 
 
 # Site is something like machine.domain, i.e. pragmatic.crd
-Site: DESKTOP-P21SRE8
+Site: Narendra
 
 # Build name is osname-revision-compiler, i.e. Linux-2.4.2-2smp-c++
 BuildName: Win32-mingw32-make
@@ -27,7 +27,7 @@ SubmitInactivityTimeout:
 NightlyStartTime: 00:00:00 EDT
 
 # Commands for the build/test/submit cycle
-ConfigureCommand: "C:/Program Files/CMake/bin/cmake.exe" "C:/Users/Dell/OneDrive/Desktop/Codespace/c-programming-2/New folder/ascii_art2"
+ConfigureCommand: "C:/Program Files/CMake/bin/cmake.exe" "C:/Users/hindw/OneDrive/Desktop/Codespace/c-programming-2/New folder/ascii_art2"
 MakeCommand: C:/Program\ Files/CMake/bin/cmake.exe --build . --config "${CTEST_CONFIGURATION_TYPE}"
 DefaultCTestConfigurationType: Release
 
@@ -45,7 +45,7 @@ SVNOptions:
 SVNUpdateOptions: 
 
 # Git options
-GITCommand: C:/Program Files/Git/cmd/git.exe
+GITCommand: GITCOMMAND-NOTFOUND
 GITInitSubmodules: 
 GITUpdateOptions: 
 GITUpdateCustom: 
@@ -58,7 +58,7 @@ P4UpdateOptions:
 P4UpdateCustom: 
 
 # Generic update command
-UpdateCommand: C:/Program Files/Git/cmd/git.exe
+UpdateCommand: GITCOMMAND-NOTFOUND
 UpdateOptions: 
 UpdateType: git
 
@@ -94,6 +94,9 @@ TimeOut: 1500
 # During parallel testing CTest will not start a new test if doing
 # so would cause the system load to exceed this value.
 TestLoad: 
+
+TLSVerify: 
+TLSVersion: 
 
 UseLaunchers: 
 CurlOptions: 

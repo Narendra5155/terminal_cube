@@ -1,3 +1,6 @@
+#ifndef CONSOLE_H
+#define CONSOLE_H
+
 #include<windows.h>
 #include<stdlib.h>
 #include<wchar.h>
@@ -19,20 +22,18 @@ typedef struct TrigRaito{
     float cc;
 }TrigRaito;
 
-
-/* float calcX(float x,float y,float z,TrigRaito *pre);
-float calcY(float x,float y,float z,TrigRaito *pre);
-float calcZ(float x,float y,float z,TrigRaito *pre); */
-
 void Error(int n);
 void calculateRotation(float x,float y,float z,Buffer *buff,TrigRaito *pre,int *nor);
 void CalclulateAngles();
 void initBuffer(Buffer *buff);
 int resetBuffer(Buffer *buff);
-int isKeydown(u_int x);
-void keyCheck();
-
-
+static inline void printtoScreen(const wchar_t *str, wchar_t *screen)
+{
+    int n = wcslen(str);
+    for (int i = 0; i < n ;i++){
+        screen[i] = str[i];
+    }
+}
 
 EXTERN const float radtoDEG;     //Defining The value of pi and 2pi for degree calculations
 EXTERN const  float Twopi;
@@ -45,7 +46,7 @@ EXTERN const wchar_t initial;                  // Background Shade
 
 EXTERN int illumination_switch;
 EXTERN const int L_len[2];
-EXTERN const wchar_t map[2][10];
+EXTERN const wchar_t map[50][50];
 
 /* const int L_len=9;                          //Length of the illumination and illumination gradient
 const wchar_t map[]=L" ▁▂▃▄▅▆▇█"; */
@@ -64,3 +65,5 @@ EXTERN float C;
 
 EXTERN float distance;                         //Distance form Camera and the screen distance from  
 EXTERN float K1;  
+
+#endif

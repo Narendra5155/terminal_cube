@@ -1,5 +1,5 @@
 
-#include"console.h"
+#include<console.h>
 #include<math.h>
 #include<stdio.h>
 #include<time.h>
@@ -8,16 +8,13 @@
 #include<windows.h>
 
 const float radtoDEG=180/3.14159265359;      //Defining The value of pi and 2pi for degree calc
-const  float Twopi=6.28318530718;
-HWND hWnd;                                  // Handle Variable for the current window
+const  float Twopi=6.28318530718;                         
 double deltatime=0.0;                         // Delta Time Variable
 double collectedtime=0.0;
-const wchar_t initial=L'.';                  // Background Shade
+const wchar_t initial=L' ';                  // Background Shade
 int illumination_switch=1;
 const int L_len[2]={5,9};
-const wchar_t map[2][10]={L" ░▒▓█",L" ▁▂▃▄▅▆▇█"};
-/* const int L_len=9;                          //Length of the illumination and illumination gradient
-const wchar_t map[]=L" ▁▂▃▄▅▆▇█"; */
+const wchar_t map[50][50]={L" ░▒▓█",L".▁▂▃▄▅▆▇█"};      //Length of the illumination and illumination gradient
 const float ldirection[3]={0,0.5,-0.86602540378};     // Illumination Vector
 float horizontal_offset=0.0;                  // offset for the screen buffer
 float vertical_offset=0.0;
@@ -29,7 +26,16 @@ float C=0.0;
 float sa,sb,sc,ca,cb,cc;                    //Variable to precomute sine and cosine
 float distance=200.0;                         //Distance form Camera and the screen distance from
 float K1=100.0;  
-TrigRaito raito;
+TrigRaito raito;                                
+int normal[6][3]={                          //The normal vectors of the six of the cube faces
+     0, 0, 1,
+     1, 0, 0,
+    -1, 0, 0,
+     0,-1, 0,
+     0, 0,-1,
+     0, 1, 0
+};
+    
 
 //Main function call
 
@@ -37,20 +43,23 @@ TrigRaito raito;
 int main(){
     
     //Get the cureent console buffer information
-
-    hWnd = GetForegroundWindow();
     CONSOLE_SCREEN_BUFFER_INFO info;
+    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE),&info);
+    
+    
     HANDLE stdHand=GetStdHandle(STD_INPUT_HANDLE);
-    DWORD oldMode,newMode;
+    DWORD oldMode,newMode,num, words_written;
+    INPUT_RECORD inRecord[128]={};
+    COORD origin={0,0};
+    
     GetConsoleMode(stdHand,&oldMode);
     newMode=ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT |ENABLE_EXTENDED_FLAGS|ENABLE_PROCESSED_INPUT;
     SetConsoleMode(stdHand,newMode);
-    HANDLE console=CreateConsoleScreenBuffer(GENERIC_READ|GENERIC_WRITE,0,NULL,CONSOLE_TEXTMODE_BUFFER,NULL);
-    DWORD conMode;
-    conMode=ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT |ENABLE_EXTENDED_FLAGS|ENABLE_PROCESSED_INPUT;
-    SetConsoleMode(console,conMode);
-    GetConsoleScreenBufferInfo(console,&info);
     
+    //Generate a new console buffer
+    HANDLE console=CreateConsoleScreenBuffer(GENERIC_READ|GENERIC_WRITE,0,NULL,CONSOLE_TEXTMODE_BUFFER,NULL);
+    //swap the generated buffer with the standard buffer
+    SetConsoleActiveScreenBuffer(console);
     
     //Set the screen buffer metadata
 
@@ -71,35 +80,19 @@ int main(){
     initBuffer(&buff1);
     resetBuffer(&buff1);
     
-    //The normal vectors of the six of the cube faces
-    int normal[6][3]={0,0,1,1,0,0,-1,0,0,0,-1,0,0,0,-1,0,1,0};
-    
-    //Generate a new console buffer
-    SetConsoleActiveScreenBuffer(console);
 
-    INPUT_RECORD inRecord[128]={};
-    DWORD num;
-
-
-
-    //SetConsoleMode(console,conMode);
-    DWORD words_written;
-    COORD origin;
-    origin.X=0;
-    origin.Y=0;
     
     //Inrement for the coordinate calculation
     float increment=0.6;
     
     //Pause flag
     int pauseFlag=0;
+    int loopOver=0;
 
     //Set up the system clock variables
     LARGE_INTEGER start,end,frequency;
     LONGLONG elapsedticks;
 
-    //swap the generated buffer with the standard buffer
-    int loopOver=0;
     
     //Animation loop Start
     while(!loopOver)
@@ -126,8 +119,6 @@ int main(){
             }
         }
         
-       // illumination_switch=1;
-        //inRecord[1].Event.KeyEvent.bKeyDown.
     GetNumberOfConsoleInputEvents(stdHand,&num);
     if(num>0){
         ReadConsoleInput(stdHand,inRecord,128,&num);
@@ -189,38 +180,18 @@ int main(){
                             break;
                          case 'R':
                             if(!inRecord[i].Event.KeyEvent.bKeyDown){
-                                GetConsoleScreenBufferInfo(console,&info);
-                                swidth=info.dwSize.X;
-                                sheight=info.dwSize.Y; 
-                                buff1.w=info.dwSize.X;
-                                buff1.h=info.dwSize.Y;
-                                free(buff1.buffer);
-                                free(buff1.zbuffer);
-                                initBuffer(&buff1);
-                                resetBuffer(&buff1);
-                                free(screen); 
-                                screen=(wchar_t*)malloc(swidth*sheight*sizeof(wchar_t));
-                                if(screen==NULL)
-                                    Error(1);
-                                wmemset(screen,initial,swidth*sheight);
-                                vertical_offset=0;
+                                A=0;
+                                B=0;
+                                C=0;
+                                K1=100;
+                                distance=200;
                                 horizontal_offset=0;
+                                vertical_offset=0;
+                                cubeWidth=20;
                             }
                             break;
                         case VK_SPACE:
                             loopOver=1;
-                            break;
-                        case VK_LEFT:
-                                horizontal_offset-=15*collectedtime;
-                            break;
-                        case VK_RIGHT:
-                                horizontal_offset+=15*collectedtime;
-                            break;
-                        case VK_DOWN:
-                                vertical_offset+=10*collectedtime;
-                            break;
-                        case VK_UP:
-                                vertical_offset-=10*collectedtime;
                             break;
                         case 'I':
                         if(!inRecord[i].Event.KeyEvent.bKeyDown)
@@ -243,44 +214,22 @@ int main(){
                     if(screen==NULL)
                         Error(1);
                     wmemset(screen,initial,swidth*sheight);
-                    vertical_offset=0;
-                    horizontal_offset=0;
                     break;
+
                 case MOUSE_EVENT:
 
-                if(inRecord[i].Event.MouseEvent.dwButtonState==FROM_LEFT_1ST_BUTTON_PRESSED){
-                    vertical_offset=inRecord[i].Event.MouseEvent.dwMousePosition.Y-sheight/2;
-                    horizontal_offset=inRecord[i].Event.MouseEvent.dwMousePosition.X-swidth/2;
-                }
+                    if(inRecord[i].Event.MouseEvent.dwButtonState==FROM_LEFT_1ST_BUTTON_PRESSED){
+                        vertical_offset=inRecord[i].Event.MouseEvent.dwMousePosition.Y-sheight/2;
+                        horizontal_offset=inRecord[i].Event.MouseEvent.dwMousePosition.X-swidth/2;
+                    }
             } 
         }
         collectedtime=0.0;
     }
-    else{
+    else
         collectedtime+=(collectedtime<0.1)?deltatime:0;
-    }
+    
         
-        //Refreshing the window
-
-        /* if(isKeydown('R')){
-            GetConsoleScreenBufferInfo(console,&info);
-            swidth=info.dwSize.X;
-            sheight=info.dwSize.Y; 
-            buff1.w=info.dwSize.X;
-            buff1.h=info.dwSize.Y;
-            free(buff1.buffer);
-            free(buff1.zbuffer);
-            initBuffer(&buff1);
-            resetBuffer(&buff1);
-            free(screen); 
-            screen=(wchar_t*)malloc(swidth*sheight*sizeof(wchar_t));
-            if(screen==NULL)
-                Error(1);
-            wmemset(screen,initial,swidth*sheight);
-            vertical_offset=0;
-            horizontal_offset=0;
-        } */
-
         //Writing the data to the screen buffer from the cube buffer
 
         for(int j=0;  j<buff1.h && j<sheight; j++){
@@ -292,29 +241,35 @@ int main(){
         //Pause The animation
 
         if(!pauseFlag){
-            swprintf(screen,swidth*sheight,L"[FPS : %5d]",(int)(1/deltatime));
-            swprintf(screen+swidth,swidth*sheight,L"[Press R to Refresh]");
-            swprintf(screen+swidth*2,swidth*sheight,L"[Press P to Pause]");
+            wchar_t out[100];
+            swprintf(out, 100, L"[FPS : %5d]", (int)(1 / deltatime));
+            printtoScreen(out, screen + 0 * swidth);
+            swprintf(out,100,L"[Press R to Refresh]");
+            printtoScreen(out, screen + 1 * swidth);
+            swprintf(out,100,L"[Press P to Pause]");
+            printtoScreen(out, screen + 2 * swidth);
             A+=rotInc[0]*deltatime;
             B+=rotInc[1]*deltatime;
             C+=rotInc[2]*deltatime;
         }
         else{
-            /* pauseFlag=1;
-            //keyCheck();
-            if(isKeydown('O'))
-                pauseFlag=0; */
-            
-            //Print the info in the pause mode
-
-            swprintf(screen+swidth*0,swidth*sheight,L"[X Rotation : %5.2f°,S-W]",A*radtoDEG);
-            swprintf(screen+swidth*1,swidth*sheight,L"[Y Rotation : %5.2f°,A-D]",B*radtoDEG);
-            swprintf(screen+swidth*2,swidth*sheight,L"[Z Rotation : %5.2f°,Q-E]",C*radtoDEG);
-            swprintf(screen+swidth*3,swidth*sheight,L"[K value    : %5.2f ,J-K]",K1);
-            swprintf(screen+swidth*4,swidth*sheight,L"[Camera     : %5.2f ,C-V]",distance);
-            swprintf(screen+swidth*5,swidth*sheight,L"[FPS        : %5d     ]",(int)(1/deltatime));
-            swprintf(screen+swidth*6,swidth*sheight,L"[Cube Width : %5.2f,N-M ]",cubeWidth);
-            swprintf(screen+swidth*7,swidth*sheight,L"[Press O to Resume      ]");
+            wchar_t out[100];
+            swprintf(out,100,L"[X Rotation : %5.2f°,S-W]",A*radtoDEG);
+            printtoScreen(out, screen + 0 * swidth);
+            swprintf(out,100,L"[Y Rotation : %5.2f°,A-D]",B*radtoDEG);
+            printtoScreen(out, screen + 1 * swidth);
+            swprintf(out,100,L"[Z Rotation : %5.2f°,Q-E]",C*radtoDEG);
+            printtoScreen(out, screen + 2 * swidth);
+            swprintf(out,100,L"[K value    : %5.2f ,J-K]",K1);
+            printtoScreen(out, screen + 3 * swidth);
+            swprintf(out,100,L"[Camera     : %5.2f ,C-V]",distance);
+            printtoScreen(out, screen + 4 * swidth);
+            swprintf(out,100,L"[FPS        : %5d     ]",(int)(1/deltatime));
+            printtoScreen(out, screen + 5 * swidth);
+            swprintf(out,100,L"[Cube Width : %5.2f,N-M ]",cubeWidth);
+            printtoScreen(out, screen + 6 * swidth);
+            swprintf(out,100,L"[Press O to Resume      ]");
+            printtoScreen(out, screen + 7 * swidth);
         }
         
         //Keep the value of rotation angle within bounds
@@ -331,19 +286,7 @@ int main(){
             B=Twopi;
         if(C<0)
             C=Twopi;
-        
-
-        /* if(isKeydown(VK_LEFT))
-                horizontal_offset-=15*deltatime;
-        if(isKeydown(VK_RIGHT))
-                horizontal_offset+=15*deltatime;
-        if(isKeydown(VK_DOWN))
-                vertical_offset+=10*deltatime;
-        if(isKeydown(VK_UP))
-                vertical_offset-=10*deltatime;
-        if(isKeydown('I'))
-                illumination_switch=0; */
-        
+                
         //Write the screen buffer to the console
 
         WriteConsoleOutputCharacterW(console,screen,swidth*sheight,origin,&words_written);
@@ -351,7 +294,7 @@ int main(){
         //resetting the buffers for the next frame
         resetBuffer(&buff1);
         wmemset(screen,initial,swidth*sheight);
-        
+
         //delta time calculation
         QueryPerformanceCounter(&end);
         elapsedticks=end.QuadPart-start.QuadPart;
@@ -360,12 +303,15 @@ int main(){
     }
 
     SetConsoleActiveScreenBuffer(GetStdHandle(STD_OUTPUT_HANDLE)); 
-    FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
+    SetStdHandle(STD_INPUT_HANDLE,stdHand);
+    SetConsoleMode(stdHand,oldMode);
+
     //Free the console handle 
     CloseHandle(console);
-    system("cls");
+
     //Print the last known resolution and FPS
     printf("Screen Width : %d\nScreen Height: %d\nFPS :%.2f\n",swidth,sheight,1/deltatime);
+    
     return 0;
 
 }
